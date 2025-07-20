@@ -20,19 +20,24 @@ class UserSerializer(serializers.ModelSerializer):
         user.save()
         return user
 
-# Serializer for the Conversation model
-class ConversationSerializer(serializers.ModelSerializer):
-    participants = UserSerializer(many=True)
-
-    class Meta:
-        model = Conversation
-        fields = ['conversation_id', 'participants']
-
 # Serializer for the Message model
 class MessageSerializer(serializers.ModelSerializer):
-    sender = UserSerializer()  # Include sender details
+    sender = UserSerializer(read_only=True)  # Include sender details
 
     class Meta:
         model = Message
         fields = ['message_id', 'sender', 'conversation', 'message_body', 'sent_at', 'created_at']
         read_only_fields = ['sent_at', 'created_at']
+
+# Serializer for the Conversation model
+class ConversationSerializer(serializers.ModelSerializer):
+    participants = UserSerializer(many=True)
+    messages = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Conversation
+        fields = ['conversation_id', 'participants', 'messages']
+
+    def get_messages(self, obj):
+        messages = Message.objects.filter(conversation=obj)
+        return MessageSerializer(messages, many=True).data
