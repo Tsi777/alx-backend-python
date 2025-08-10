@@ -17,7 +17,6 @@ RUN apt-get update && apt-get install -y \
     pkg-config \
   && rm -rf /var/lib/apt/lists/*
 
-
 # Copy requirements.txt from the build context (current directory)
 COPY requirements.txt .
 
@@ -35,4 +34,6 @@ USER django_user
 EXPOSE 8000
 
 # Command to run the Django development server
-CMD ["python", "manage.py", "runserver", "-p", "8000", "0.0.0.0"]
+CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+
+
