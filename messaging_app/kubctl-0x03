@@ -1,0 +1,11 @@
+#!/bin/bash
+
+kubectl apply -f blue_deployment.yaml
+
+kubectl rollout status deployment/django-messaging-app
+
+# Test app continuously to ensure no downtime (example using curl)
+while true; do
+  curl -s http://<service-ip-or-port>
+  sleep 1
+done
