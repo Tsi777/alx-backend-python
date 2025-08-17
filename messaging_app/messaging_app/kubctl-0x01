@@ -1,0 +1,13 @@
+#!/bin/bash
+set -e
+
+kubectl scale deployment django-messaging --replicas=3
+kubectl get pods
+
+# Port-forward for testing (optional)
+kubectl port-forward svc/django-service 8000:8000 &
+
+# Load test (requires wrk installed)
+wrk -t2 -c50 -d15s http://localhost:8000
+
+kubectl top pods
