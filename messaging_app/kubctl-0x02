@@ -1,0 +1,7 @@
+#!/bin/bash
+kubectl apply -f blue_deployment.yaml
+kubectl apply -f green_deployment.yaml
+kubectl apply -f kubeservice.yaml
+
+# Check logs on green deployment pods
+kubectl logs -l app=django-green
