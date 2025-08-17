@@ -1,0 +1,86 @@
+{% extends "rest_framework/base.html" %}
+
+{% block title %}Sign In{% endblock %}
+
+{% block content %}
+<style>
+  body {
+    background: #f0f2f5;
+  }
+  .login-container {
+    max-width: 400px;
+    margin: 60px auto;
+    padding: 30px;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    font-family: Arial, sans-serif;
+  }
+  .login-container h2 {
+    text-align: center;
+    margin-bottom: 24px;
+    color: #333;
+  }
+  .login-container label {
+    font-weight: bold;
+    display: block;
+    margin-bottom: 6px;
+    color: #555;
+  }
+  .login-container input[type="text"],
+  .login-container input[type="password"] {
+    width: 100%;
+    padding: 10px 12px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    box-sizing: border-box;
+    font-size: 16px;
+    transition: border-color 0.3s ease;
+  }
+  .login-container input[type="text"]:focus,
+  .login-container input[type="password"]:focus {
+    border-color: #4a90e2;
+    outline: none;
+  }
+  .login-container button {
+    width: 100%;
+    padding: 12px;
+    background-color: #4a90e2;
+    border: none;
+    border-radius: 6px;
+    color: white;
+    font-weight: bold;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  .login-container button:hover {
+    background-color: #357ABD;
+  }
+  .error-message {
+    color: #e74c3c;
+    margin-bottom: 16px;
+    text-align: center;
+  }
+</style>
+
+<div class="login-container">
+  <h2>Sign In</h2>
+  {% if form.errors %}
+    <div class="error-message">
+      Please correct the errors below.
+    </div>
+  {% endif %}
+  <form method="post" action="{% url 'rest_framework:login' %}">
+    {% csrf_token %}
+    <label for="{{ form.username.id_for_label }}">Email</label>
+    {{ form.username }}
+
+    <label for="{{ form.password.id_for_label }}">Password</label>
+    {{ form.password }}
+
+    <button type="submit">Log in</button>
+  </form>
+</div>
+{% endblock %}
